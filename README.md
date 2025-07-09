@@ -49,7 +49,6 @@ Ridmint is a revolutionary Web3 platform that enables storytellers to mint their
 
 ### Data Storage
 - **localStorage** (Current Implementation): Stories stored locally in browser
-- **Supabase** (Available Integration): PostgreSQL database with real-time features
 
 ## 🚀 Getting Started
 
@@ -62,7 +61,7 @@ Ridmint is a revolutionary Web3 platform that enables storytellers to mint their
 
 1. **Clone the repository**
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/Fatumayattani/ridmint.git
    cd ridmint
    ```
 
@@ -81,14 +80,7 @@ Ridmint is a revolutionary Web3 platform that enables storytellers to mint their
 
 ### Environment Setup
 
-The application works out of the box with localStorage. For Supabase integration:
-
-1. Create a `.env` file based on `.env.example`
-2. Add your Supabase project credentials:
-   ```env
-   VITE_SUPABASE_URL=your_supabase_project_url
-   VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
-   ```
+The application works out of the box with localStorage.
 
 ## 🔗 Wallet Configuration
 
@@ -117,158 +109,6 @@ The application works out of the box with localStorage. For Supabase integration
 - **Scope**: Device/browser specific
 - **Capacity**: ~5-10MB typical limit
 - **Backup**: Manual export/import (not implemented)
-
-### Available Integration: Supabase
-- **Database**: PostgreSQL with real-time subscriptions
-- **Authentication**: Built-in user management
-- **Storage**: File uploads and management
-- **API**: Auto-generated REST and GraphQL APIs
-- **Migration**: SQL migration files included
-
-#### Supabase Schema
-```sql
-stories (
-  id: uuid PRIMARY KEY,
-  title: text NOT NULL,
-  description: text NOT NULL,
-  content: text NOT NULL,
-  genre: text,
-  audience: text,
-  creator_address: text NOT NULL,
-  transaction_hash: text UNIQUE NOT NULL,
-  token_address: text,
-  token_symbol: text NOT NULL,
-  token_supply: text NOT NULL,
-  initial_price: text NOT NULL,
-  created_at: timestamptz DEFAULT now(),
-  updated_at: timestamptz DEFAULT now()
-)
-```
-
-## 🏗 Project Structure
-
-```
-ridmint/
-├── public/
-│   └── ridmlogo.png              # Application logo
-├── src/
-│   ├── components/               # Reusable UI components
-│   │   ├── Header.tsx           # Navigation header
-│   │   ├── Hero.tsx             # Landing page hero section
-│   │   ├── Features.tsx         # Features showcase
-│   │   ├── HowItWorks.tsx       # Process explanation
-│   │   ├── ForCreators.tsx      # Creator benefits
-│   │   ├── ForSupporters.tsx    # Supporter benefits
-│   │   ├── Footer.tsx           # Site footer
-│   │   ├── WalletOptionsModal.tsx # Wallet connection modal
-│   │   └── UserProfileDropdown.tsx # User profile menu
-│   ├── pages/                   # Page components
-│   │   ├── HomePage.tsx         # Landing page
-│   │   ├── CreateStoryPage.tsx  # Story creation and minting
-│   │   └── StoryLibraryPage.tsx # Story browsing and discovery
-│   ├── lib/                     # Utility libraries
-│   │   ├── localStoryService.ts # localStorage data service
-│   │   └── supabase.ts          # Supabase client and types
-│   ├── App.tsx                  # Main application component
-│   ├── main.tsx                 # Application entry point
-│   ├── wagmi.ts                 # Web3 configuration
-│   └── index.css                # Global styles and animations
-├── supabase/
-│   └── migrations/              # Database migration files
-├── package.json                 # Dependencies and scripts
-├── tailwind.config.js           # Tailwind CSS configuration
-├── vite.config.ts              # Vite build configuration
-└── tsconfig.json               # TypeScript configuration
-```
-
-## 🎨 Design System
-
-### Color Palette
-- **Primary**: Pink to Green gradients (`from-pink-500 to-green-500`)
-- **Secondary**: Gray scale for text and backgrounds
-- **Accent**: Blue for links and interactive elements
-- **Status**: Green (success), Red (error), Yellow (warning)
-
-### Typography
-- **Headings**: Bold, gradient text effects
-- **Body**: Clean, readable sans-serif
-- **Code**: Monospace for technical content
-
-### Animations
-- **Micro-interactions**: Hover states, button transforms
-- **Page transitions**: Smooth fade-ins and slide-ups
-- **Loading states**: Spinners and skeleton screens
-- **Background effects**: Floating elements, gradient animations
-
-## 🔧 Development Scripts
-
-```bash
-# Start development server
-npm run dev
-
-# Build for production
-npm run build
-
-# Preview production build
-npm run preview
-
-# Run ESLint
-npm run lint
-```
-
-## 🌐 Deployment
-
-### Build Process
-1. **Production Build**
-   ```bash
-   npm run build
-   ```
-
-2. **Static Files**: Generated in `dist/` directory
-
-3. **Deployment Targets**:
-   - Netlify (recommended)
-   - Vercel
-   - GitHub Pages
-   - Any static hosting service
-
-### Environment Variables for Production
-```env
-VITE_SUPABASE_URL=your_production_supabase_url
-VITE_SUPABASE_ANON_KEY=your_production_supabase_anon_key
-```
-
-## 🔐 Security Considerations
-
-### Smart Contract Security
-- Uses audited Zora Coins SDK
-- Transparent, open-source contracts
-- Base Sepolia testnet for development
-
-### Data Privacy
-- No personal data collection
-- Wallet addresses are public (blockchain nature)
-- Local storage is client-side only
-
-### Best Practices
-- Input validation and sanitization
-- Secure wallet connection handling
-- Error boundary implementation
-- Rate limiting considerations
-
-## 🧪 Testing
-
-### Manual Testing Checklist
-- [ ] Wallet connection with different providers
-- [ ] Story creation and minting flow
-- [ ] Story library browsing and filtering
-- [ ] Responsive design on various devices
-- [ ] Network switching functionality
-
-### Automated Testing (Future)
-- Unit tests for utility functions
-- Integration tests for Web3 interactions
-- E2E tests for user workflows
 
 ## 🤝 Contributing
 
@@ -339,7 +179,7 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ## 🙏 Acknowledgments
 
-- **Zora Labs** for the Coins SDK
+- **Zora ** for the Coins SDK
 - **Base** for the L2 infrastructure
 - **Wagmi** team for Web3 React hooks
 - **Tailwind CSS** for the utility-first framework
