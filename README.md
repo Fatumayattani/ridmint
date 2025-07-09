@@ -179,7 +179,7 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ## 🙏 Acknowledgments
 
-- **Zora ** for the Coins SDK
+- **Zora** for the Coins SDK
 - **Base** for the L2 infrastructure
 - **Wagmi** team for Web3 React hooks
 - **Tailwind CSS** for the utility-first framework
