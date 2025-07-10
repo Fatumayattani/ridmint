@@ -18,7 +18,7 @@ const Hero: React.FC<HeroProps> = ({ setShowWalletOptions }) => {
   };
 
   return (
-    <section className="pt-20 pb-16 bg-gradient-to-br from-pink-50 via-green-50 to-emerald-50 relative overflow-hidden">
+    <section className="pt-20 pb-16 bg-gradient-to-br from-pink-50 via-green-50 to-yellow-50 relative overflow-hidden">
       {/* Animated background elements */}
       <div className="absolute inset-0">
         <div className="absolute top-20 left-10 w-32 h-32 bg-pink-200/30 rounded-full animate-pulse"></div>
@@ -34,7 +34,7 @@ const Hero: React.FC<HeroProps> = ({ setShowWalletOptions }) => {
             <div className="flex justify-center lg:justify-start mb-6">
               <div className="flex items-center space-x-2 bg-white/80 backdrop-blur-sm px-4 py-2 rounded-full border border-pink-200 animate-fade-in">
                 <Sparkles className="w-4 h-4 text-pink-600 animate-spin-slow" />
-                <span className="text-sm font-medium bg-gradient-to-r from-pink-600 to-green-600 bg-clip-text text-transparent">
+                <span className="text-sm font-medium bg-gradient-to-r from-pink-600 to-yellow-600 bg-clip-text text-transparent">
                   Web3 Storytelling
                 </span>
               </div>
@@ -54,7 +54,7 @@ const Hero: React.FC<HeroProps> = ({ setShowWalletOptions }) => {
             <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start animate-slide-up delay-400">
               <button 
                 onClick={handleStartCreating}
-                className="group px-8 py-4 bg-gradient-to-r from-pink-500 to-green-500 text-white rounded-xl font-semibold hover:from-pink-600 hover:to-green-600 transition-all transform hover:scale-105 shadow-lg hover:shadow-xl"
+                className="group px-8 py-4 bg-gradient-to-r from-pink-500 to-yellow-500 text-white rounded-xl font-semibold hover:from-pink-600 hover:to-green-600 transition-all transform hover:scale-105 shadow-lg hover:shadow-xl"
               >
                 {isConnected ? 'Start Creating' : 'Connect & Create'}
                 <ArrowRight className="w-5 h-5 inline ml-2 group-hover:translate-x-1 transition-transform" />

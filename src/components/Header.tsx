@@ -47,7 +47,7 @@ const Header: React.FC<HeaderProps> = ({ setShowWalletOptions }) => {
             ) : (
               <button 
                 onClick={handleConnectClick}
-                className="px-4 py-2 bg-gradient-to-r from-pink-500 to-green-500 text-white rounded-lg hover:from-pink-600 hover:to-green-600 transition-all transform hover:scale-105"
+                className="px-4 py-2 bg-gradient-to-r from-pink-500 to-yellow-500 text-white rounded-lg hover:from-pink-600 hover:to-green-600 transition-all transform hover:scale-105"
               >
                 <Wallet className="w-4 h-4 inline mr-2" />
                 Connect Wallet
