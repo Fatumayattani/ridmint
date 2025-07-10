@@ -1,5 +1,5 @@
 import React from 'react';
-import { Twitter, Github, MessageCircle, Heart } from 'lucide-react';
+import { X, Github, MessageCircle, Heart } from 'lucide-react';
 
 const Footer = () => {
   return (
@@ -17,8 +17,8 @@ const Footer = () => {
               Empowering storytellers to monetize creativity through blockchain technology and community support.
             </p>
             <div className="flex space-x-4">
-              <a href="#" className="text-gray-400 hover:text-pink-400 transition-colors p-2 bg-gray-800 rounded-lg hover:bg-gray-700">
-                <Twitter className="w-5 h-5" />
+              <a href="https://x.com/rid_mint" className="text-gray-400 hover:text-pink-400 transition-colors p-2 bg-gray-800 rounded-lg hover:bg-gray-700">
+                <X className="w-5 h-5" />
               </a>
               <a href="#" className="text-gray-400 hover:text-green-400 transition-colors p-2 bg-gray-800 rounded-lg hover:bg-gray-700">
                 <Github className="w-5 h-5" />
