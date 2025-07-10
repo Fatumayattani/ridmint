@@ -20,7 +20,7 @@ const Footer = () => {
               <a href="https://x.com/rid_mint" className="text-gray-400 hover:text-pink-400 transition-colors p-2 bg-gray-800 rounded-lg hover:bg-gray-700">
                 <X className="w-5 h-5" />
               </a>
-              <a href="#" className="text-gray-400 hover:text-green-400 transition-colors p-2 bg-gray-800 rounded-lg hover:bg-gray-700">
+              <a href="https://github.com/Fatumayattani/ridmint" className="text-gray-400 hover:text-green-400 transition-colors p-2 bg-gray-800 rounded-lg hover:bg-gray-700">
                 <Github className="w-5 h-5" />
               </a>
               <a href="#" className="text-gray-400 hover:text-pink-400 transition-colors p-2 bg-gray-800 rounded-lg hover:bg-gray-700">
