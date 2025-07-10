@@ -134,7 +134,7 @@ The application works out of the box with localStorage.
 - ✅ Responsive design
 
 ### Phase 2 (Planned)
-- [ ] Supabase integration activation
+- [ ] Database integration activation
 - [ ] User profiles and authentication
 - [ ] Story categories and search
 - [ ] Token trading interface
