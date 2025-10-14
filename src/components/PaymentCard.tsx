@@ -1,0 +1,177 @@
+import { Clock, CheckCircle2, XCircle, ArrowRight, Calendar } from 'lucide-react';
+import { Payment } from '../lib/supabase';
+import { formatAddress, formatAmount, formatDate, formatTimeRemaining } from '../utils/format';
+import { Contract } from 'ethers';
+import { useState } from 'react';
+
+interface PaymentCardProps {
+  payment: Payment;
+  currentAddress: string;
+  onRelease: (paymentId: string) => Promise<void>;
+  onCancel: (paymentId: string) => Promise<void>;
+  contract: Contract | null;
+}
+
+export function PaymentCard({ payment, currentAddress, onRelease, onCancel, contract }: PaymentCardProps) {
+  const [canRelease, setCanRelease] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  const isCreator = payment.creator_address.toLowerCase() === currentAddress.toLowerCase();
+  const isRecipient = payment.recipient_address.toLowerCase() === currentAddress.toLowerCase();
+
+  const statusConfig = {
+    pending: {
+      icon: Clock,
+      color: 'text-[#2D2D2D]',
+      bgColor: 'bg-[#F4A261]',
+      borderColor: 'border-[#2D2D2D]',
+      label: 'Pending',
+    },
+    completed: {
+      icon: CheckCircle2,
+      color: 'text-[#2D2D2D]',
+      bgColor: 'bg-[#8AC185]',
+      borderColor: 'border-[#2D2D2D]',
+      label: 'Completed',
+    },
+    cancelled: {
+      icon: XCircle,
+      color: 'text-[#2D2D2D]',
+      bgColor: 'bg-[#E76F51]',
+      borderColor: 'border-[#2D2D2D]',
+      label: 'Cancelled',
+    },
+  };
+
+  const status = statusConfig[payment.status as keyof typeof statusConfig];
+  const StatusIcon = status.icon;
+
+  const checkCanRelease = async () => {
+    if (!contract || payment.status !== 'pending') return;
+
+    try {
+      const result = await contract.canRelease(0);
+      setCanRelease(result);
+    } catch (error) {
+      console.error('Error checking release status:', error);
+    }
+  };
+
+  useState(() => {
+    checkCanRelease();
+  });
+
+  const handleRelease = async () => {
+    setLoading(true);
+    try {
+      await onRelease(payment.id);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleCancel = async () => {
+    setLoading(true);
+    try {
+      await onCancel(payment.id);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="illustrated-card p-6 hover:shadow-[6px_6px_0px_0px_rgba(45,45,45,1)] transition-all duration-200">
+      <div className="flex items-start justify-between mb-4">
+        <div className={`flex items-center space-x-2 px-3 py-1 rounded-[10px] ${status.bgColor} ${status.borderColor} border-[2px]`}>
+          <StatusIcon className={`w-4 h-4 ${status.color}`} />
+          <span className={`text-sm font-bold ${status.color}`}>{status.label}</span>
+        </div>
+
+        <div className="text-right">
+          <div className="text-2xl font-bold text-[#2D2D2D]">
+            {formatAmount(payment.amount, payment.token === 'USDC' ? 6 : 18)} {payment.token}
+          </div>
+        </div>
+      </div>
+
+      <div className="space-y-3 mb-4">
+        <div className="flex items-center justify-between text-sm">
+          <span className="text-[#2D2D2D] text-opacity-60 font-semibold">From</span>
+          <span className="font-mono font-bold text-[#2D2D2D]">{formatAddress(payment.creator_address)}</span>
+        </div>
+
+        <div className="flex items-center justify-center">
+          <ArrowRight className="w-5 h-5 text-[#2D2D2D] text-opacity-40" />
+        </div>
+
+        <div className="flex items-center justify-between text-sm">
+          <span className="text-[#2D2D2D] text-opacity-60 font-semibold">To</span>
+          <span className="font-mono font-bold text-[#2D2D2D]">{formatAddress(payment.recipient_address)}</span>
+        </div>
+      </div>
+
+      <div className="border-t-[2px] border-[#E5E5E5] pt-4 space-y-3">
+        <div className="flex items-center justify-between text-sm">
+          <span className="text-[#2D2D2D] text-opacity-60 flex items-center space-x-2 font-semibold">
+            <Calendar className="w-4 h-4" />
+            <span>Created</span>
+          </span>
+          <span className="text-[#2D2D2D] font-medium">{formatDate(payment.created_at)}</span>
+        </div>
+
+        {payment.condition_type === 'time_delay' && payment.status === 'pending' && (
+          <div className="flex items-center justify-between text-sm">
+            <span className="text-[#2D2D2D] text-opacity-60 flex items-center space-x-2 font-semibold">
+              <Clock className="w-4 h-4" />
+              <span>Release Time</span>
+            </span>
+            <span className="text-[#2D2D2D] font-bold">
+              {formatTimeRemaining(parseInt(payment.condition_value))}
+            </span>
+          </div>
+        )}
+
+        {payment.condition_type === 'event' && payment.status === 'pending' && (
+          <div className="bg-[#E9C46A] border-[2px] border-[#2D2D2D] rounded-[10px] p-3 text-sm text-[#2D2D2D]">
+            <strong>Condition:</strong> Manual release required by creator
+          </div>
+        )}
+      </div>
+
+      {payment.status === 'pending' && (
+        <div className="mt-4 flex flex-col sm:flex-row gap-3">
+          {((payment.condition_type === 'time_delay' && canRelease) || isRecipient) && (
+            <button
+              onClick={handleRelease}
+              disabled={loading}
+              className="flex-1 px-4 py-2 bg-[#8AC185] text-white font-bold illustrated-button-sm disabled:opacity-50"
+            >
+              {loading ? 'Processing...' : 'Release Payment'}
+            </button>
+          )}
+
+          {isCreator && (
+            <>
+              {payment.condition_type === 'event' && (
+                <button
+                  onClick={handleRelease}
+                  disabled={loading}
+                  className="flex-1 px-4 py-2 bg-[#8AC185] text-white font-bold illustrated-button-sm disabled:opacity-50"
+                >
+                  {loading ? 'Processing...' : 'Release Payment'}
+                </button>
+              )}
+              <button
+                onClick={handleCancel}
+                disabled={loading}
+                className="px-4 py-2 bg-[#FEF5ED] text-[#E76F51] border-[2px] border-[#E76F51] rounded-[10px] font-bold hover:bg-[#E76F51] hover:text-white transition-all duration-200 disabled:opacity-50"
+              >
+                Cancel
+              </button>
+            </>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}

@@ -1,93 +1,40 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Menu, X, Wallet } from 'lucide-react';
-import { useAccount, useDisconnect } from 'wagmi';
-import { useEffect } from 'react';
-import UserProfileDropdown from './UserProfileDropdown';
+import { Wallet } from 'lucide-react';
+import { WalletDropdown } from './WalletDropdown';
 
 interface HeaderProps {
-  setShowWalletOptions: (show: boolean) => void;
+  account: string | null;
+  isConnecting: boolean;
+  onConnect: () => void;
+  onDisconnect: () => void;
 }
 
-const Header: React.FC<HeaderProps> = ({ setShowWalletOptions }) => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const navigate = useNavigate();
-  const { address, isConnected } = useAccount();
-  const { disconnect } = useDisconnect();
-
-  // Redirect to create story page when wallet is connected
-  useEffect(() => {
-    if (isConnected) {
-      navigate('/create-story');
-    }
-  }, [isConnected, navigate]);
-
-  const handleConnectClick = () => {
-    setShowWalletOptions(true);
-  };
-
+export function Header({ account, isConnecting, onConnect, onDisconnect }: HeaderProps) {
   return (
-    <header className="fixed top-0 left-0 right-0 z-30 bg-gray-200/90 backdrop-blur-md border-b border-gray-300">
+    <header className="bg-white border-b-[3px] border-[#2D2D2D] sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
-          <div className="flex items-center">
-            <img src="/ridmlogo.png" alt="Ridmint" className="w-[130px] h-[130px]" />
+          <div className="flex items-center space-x-3">
+            <div className="w-10 h-10 rounded-[12px] bg-[#F4A261] border-[2px] border-[#2D2D2D] flex items-center justify-center shadow-[2px_2px_0px_0px_rgba(45,45,45,1)]">
+              <Wallet className="w-6 h-6 text-[#2D2D2D]" />
+            </div>
+            <h1 className="text-2xl font-bold text-[#2D2D2D] tracking-tight">
+              Ridmint
+            </h1>
           </div>
-          
-          <nav className="hidden md:flex space-x-8">
-            <button onClick={() => navigate('/')} className="text-gray-900 font-semibold hover:text-pink-600 transition-colors">Home</button>
-            <button onClick={() => navigate('/stories')} className="text-gray-900 font-semibold hover:text-pink-600 transition-colors">Library</button>
-            <a href="/#features" className="text-gray-900 font-semibold hover:text-pink-600 transition-colors">Features</a>
-            <a href="/#how-it-works" className="text-gray-900 font-semibold hover:text-pink-600 transition-colors">How It Works</a>
-          </nav>
-          
-          <div className="hidden md:flex items-center space-x-4">
-            {isConnected ? (
-              <UserProfileDropdown address={address!} />
-            ) : (
-              <button 
-                onClick={handleConnectClick}
-                className="px-4 py-2 bg-gradient-to-r from-pink-500 to-yellow-500 text-white rounded-lg hover:from-pink-600 hover:to-green-600 transition-all transform hover:scale-105"
-              >
-                <Wallet className="w-4 h-4 inline mr-2" />
-                Connect Wallet
-              </button>
-            )}
-          </div>
-          
-          <button 
-            className="md:hidden"
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-          >
-            {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-          </button>
+
+          {account ? (
+            <WalletDropdown account={account} onDisconnect={onDisconnect} />
+          ) : (
+            <button
+              onClick={onConnect}
+              disabled={isConnecting}
+              className="px-6 py-2 bg-[#E9C46A] text-[#2D2D2D] font-semibold illustrated-button-sm disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {isConnecting ? 'Connecting...' : 'Connect Wallet'}
+            </button>
+          )}
         </div>
-        
-        {isMenuOpen && (
-          <div className="md:hidden">
-            <nav className="px-2 pt-2 pb-3 space-y-1 bg-gray-200/90">
-              <button onClick={() => navigate('/')} className="block w-full text-left px-3 py-2 text-gray-900 font-semibold hover:text-pink-600">Home</button>
-              <button onClick={() => navigate('/stories')} className="block w-full text-left px-3 py-2 text-gray-900 font-semibold hover:text-pink-600">Library</button>
-              <a href="/#features" className="block px-3 py-2 text-gray-900 font-semibold hover:text-pink-600">Features</a>
-              <a href="/#how-it-works" className="block px-3 py-2 text-gray-900 font-semibold hover:text-pink-600">How It Works</a>
-              <div className="pt-4 space-y-2">
-                {isConnected ? (
-                  <UserProfileDropdown address={address!} />
-                ) : (
-                  <button 
-                    onClick={handleConnectClick}
-                    className="w-full px-4 py-2 bg-gradient-to-r from-pink-500 to-green-500 text-white rounded-lg"
-                  >
-                    Connect Wallet
-                  </button>
-                )}
-              </div>
-            </nav>
-          </div>
-        )}
       </div>
     </header>
   );
-};
-
-export default Header;
+}
