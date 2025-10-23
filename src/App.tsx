@@ -152,7 +152,7 @@ function App() {
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {!account ? (
           <div className="text-center py-24 px-8 illustrated-card max-w-3xl mx-auto">
-            <h2 className="text-5xl md:text-6xl font-black text-[#2D2D2D] mb-6">
+            <h2 className="text-5xl md:text-6xl font-black text-[#2D2D2D] mb-10">
               Welcome to Ridmint
             </h2>
             <p className="text-[#2D2D2D] text-xl font-semibold max-w-md mx-auto leading-relaxed">
