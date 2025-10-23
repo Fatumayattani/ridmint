@@ -39,7 +39,7 @@ Before you begin, ensure you have:
 ### 1. Clone the Repository
 
 ```bash
-git clone <repository-url>
+https://github.com/Fatumayattani/ridmint.git
 cd ridmint
 ```
 
@@ -202,21 +202,6 @@ npm run lint
 npm run typecheck
 ```
 
-## Design System
-
-Ridmint features a custom illustrated design system with:
-
-- Warm beige background (`#F5F1E8`)
-- Thick borders and prominent shadows
-- Playful color palette:
-  - Golden Yellow: `#E9C46A`
-  - Sage Green: `#8AC185`
-  - Coral Orange: `#E76F51`
-  - Burnt Sienna: `#F4A261`
-  - Dark Brown: `#2D2D2D`
-- Rounded corners and comic-book aesthetics
-- Custom utility classes for consistent styling
-
 ## Network Configuration
 
 ### Base Sepolia (Testnet)
@@ -287,11 +272,4 @@ For questions or issues:
 
 ## Acknowledgments
 
-- Built on [Base](https://base.org/) by Coinbase
-- Powered by [Supabase](https://supabase.com/)
-- UI components styled with [Tailwind CSS](https://tailwindcss.com/)
-- Icons from [Lucide](https://lucide.dev/)
-
----
-
-Made with care for the Web3 community
+- Built on [Base](https://base.org/)
