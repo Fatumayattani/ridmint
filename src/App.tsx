@@ -152,9 +152,6 @@ function App() {
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {!account ? (
           <div className="text-center py-24 px-8 illustrated-card max-w-3xl mx-auto">
-            <div className="w-20 h-20 mx-auto mb-6 rounded-[20px] bg-[#1E88E5] border-[3px] border-[#2D2D2D] flex items-center justify-center shadow-[3px_3px_0px_0px_rgba(45,45,45,1)]">
-              <Inbox className="w-10 h-10 text-white" />
-            </div>
             <h2 className="text-5xl md:text-6xl font-black text-[#2D2D2D] mb-6">
               Welcome to Ridmint
             </h2>
