@@ -25,9 +25,8 @@ export function Header({ account, isConnecting, onConnectWallet, onDisconnect }:
             <img
               src="/images/ridmint.png"
               alt="Ridmint Logo"
-              className="h-12 w-12"
+              className="h-60 w-60"
             />
-            <h1 className="text-3xl font-black text-[#2D2D2D]">Ridmint</h1>
           </div>
 
           {account ? (
