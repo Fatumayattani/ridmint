@@ -23,21 +23,21 @@ export function PaymentCard({ payment, currentAddress, onRelease, onCancel, cont
     pending: {
       icon: Clock,
       color: 'text-[#2D2D2D]',
-      bgColor: 'bg-[#F4A261]',
+      bgColor: 'bg-[#64B5F6]',
       borderColor: 'border-[#2D2D2D]',
       label: 'Pending',
     },
     completed: {
       icon: CheckCircle2,
-      color: 'text-[#2D2D2D]',
-      bgColor: 'bg-[#8AC185]',
+      color: 'text-white',
+      bgColor: 'bg-[#26A69A]',
       borderColor: 'border-[#2D2D2D]',
       label: 'Completed',
     },
     cancelled: {
       icon: XCircle,
-      color: 'text-[#2D2D2D]',
-      bgColor: 'bg-[#E76F51]',
+      color: 'text-white',
+      bgColor: 'bg-[#5C6BC0]',
       borderColor: 'border-[#2D2D2D]',
       label: 'Cancelled',
     },
@@ -82,57 +82,57 @@ export function PaymentCard({ payment, currentAddress, onRelease, onCancel, cont
   return (
     <div className="illustrated-card p-6 hover:shadow-[6px_6px_0px_0px_rgba(45,45,45,1)] transition-all duration-200">
       <div className="flex items-start justify-between mb-4">
-        <div className={`flex items-center space-x-2 px-3 py-1 rounded-[10px] ${status.bgColor} ${status.borderColor} border-[2px]`}>
-          <StatusIcon className={`w-4 h-4 ${status.color}`} />
-          <span className={`text-sm font-bold ${status.color}`}>{status.label}</span>
+        <div className={`flex items-center space-x-2 px-4 py-2 rounded-[10px] ${status.bgColor} ${status.borderColor} border-[2px]`}>
+          <StatusIcon className={`w-5 h-5 ${status.color}`} />
+          <span className={`text-base font-black ${status.color}`}>{status.label}</span>
         </div>
 
         <div className="text-right">
-          <div className="text-2xl font-bold text-[#2D2D2D]">
+          <div className="text-3xl font-black text-[#2D2D2D]">
             {formatAmount(payment.amount, payment.token === 'USDC' ? 6 : 18)} {payment.token}
           </div>
         </div>
       </div>
 
       <div className="space-y-3 mb-4">
-        <div className="flex items-center justify-between text-sm">
-          <span className="text-[#2D2D2D] text-opacity-60 font-semibold">From</span>
-          <span className="font-mono font-bold text-[#2D2D2D]">{formatAddress(payment.creator_address)}</span>
+        <div className="flex items-center justify-between text-base">
+          <span className="text-[#2D2D2D] font-black">From</span>
+          <span className="font-mono font-black text-[#2D2D2D]">{formatAddress(payment.creator_address)}</span>
         </div>
 
         <div className="flex items-center justify-center">
-          <ArrowRight className="w-5 h-5 text-[#2D2D2D] text-opacity-40" />
+          <ArrowRight className="w-6 h-6 text-[#2D2D2D]" />
         </div>
 
-        <div className="flex items-center justify-between text-sm">
-          <span className="text-[#2D2D2D] text-opacity-60 font-semibold">To</span>
-          <span className="font-mono font-bold text-[#2D2D2D]">{formatAddress(payment.recipient_address)}</span>
+        <div className="flex items-center justify-between text-base">
+          <span className="text-[#2D2D2D] font-black">To</span>
+          <span className="font-mono font-black text-[#2D2D2D]">{formatAddress(payment.recipient_address)}</span>
         </div>
       </div>
 
       <div className="border-t-[2px] border-[#E5E5E5] pt-4 space-y-3">
-        <div className="flex items-center justify-between text-sm">
-          <span className="text-[#2D2D2D] text-opacity-60 flex items-center space-x-2 font-semibold">
-            <Calendar className="w-4 h-4" />
+        <div className="flex items-center justify-between text-base">
+          <span className="text-[#2D2D2D] flex items-center space-x-2 font-black">
+            <Calendar className="w-5 h-5" />
             <span>Created</span>
           </span>
-          <span className="text-[#2D2D2D] font-medium">{formatDate(payment.created_at)}</span>
+          <span className="text-[#2D2D2D] font-bold">{formatDate(payment.created_at)}</span>
         </div>
 
         {payment.condition_type === 'time_delay' && payment.status === 'pending' && (
-          <div className="flex items-center justify-between text-sm">
-            <span className="text-[#2D2D2D] text-opacity-60 flex items-center space-x-2 font-semibold">
-              <Clock className="w-4 h-4" />
+          <div className="flex items-center justify-between text-base">
+            <span className="text-[#2D2D2D] flex items-center space-x-2 font-black">
+              <Clock className="w-5 h-5" />
               <span>Release Time</span>
             </span>
-            <span className="text-[#2D2D2D] font-bold">
+            <span className="text-[#2D2D2D] font-black">
               {formatTimeRemaining(parseInt(payment.condition_value))}
             </span>
           </div>
         )}
 
         {payment.condition_type === 'event' && payment.status === 'pending' && (
-          <div className="bg-[#E9C46A] border-[2px] border-[#2D2D2D] rounded-[10px] p-3 text-sm text-[#2D2D2D]">
+          <div className="bg-[#BBDEFB] border-[2px] border-[#2D2D2D] rounded-[10px] p-3 text-base font-semibold text-[#2D2D2D]">
             <strong>Condition:</strong> Manual release required by creator
           </div>
         )}
@@ -144,7 +144,7 @@ export function PaymentCard({ payment, currentAddress, onRelease, onCancel, cont
             <button
               onClick={handleRelease}
               disabled={loading}
-              className="flex-1 px-4 py-2 bg-[#8AC185] text-white font-bold illustrated-button-sm disabled:opacity-50"
+              className="flex-1 px-5 py-3 bg-[#26A69A] text-white text-base font-black illustrated-button-sm disabled:opacity-50 hover:bg-[#00897B]"
             >
               {loading ? 'Processing...' : 'Release Payment'}
             </button>
@@ -156,7 +156,7 @@ export function PaymentCard({ payment, currentAddress, onRelease, onCancel, cont
                 <button
                   onClick={handleRelease}
                   disabled={loading}
-                  className="flex-1 px-4 py-2 bg-[#8AC185] text-white font-bold illustrated-button-sm disabled:opacity-50"
+                  className="flex-1 px-5 py-3 bg-[#26A69A] text-white text-base font-black illustrated-button-sm disabled:opacity-50 hover:bg-[#00897B]"
                 >
                   {loading ? 'Processing...' : 'Release Payment'}
                 </button>
@@ -164,7 +164,7 @@ export function PaymentCard({ payment, currentAddress, onRelease, onCancel, cont
               <button
                 onClick={handleCancel}
                 disabled={loading}
-                className="px-4 py-2 bg-[#FEF5ED] text-[#E76F51] border-[2px] border-[#E76F51] rounded-[10px] font-bold hover:bg-[#E76F51] hover:text-white transition-all duration-200 disabled:opacity-50"
+                className="px-5 py-3 bg-[#E3F2FD] text-[#5C6BC0] border-[2px] border-[#5C6BC0] rounded-[10px] text-base font-black hover:bg-[#5C6BC0] hover:text-white transition-all duration-200 disabled:opacity-50"
               >
                 Cancel
               </button>

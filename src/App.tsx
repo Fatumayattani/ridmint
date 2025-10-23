@@ -10,7 +10,7 @@ import { Contract, parseUnits } from 'ethers';
 import { CONTRACTS, CONTRACT_ABI, ERC20_ABI, NETWORKS } from './config/contracts';
 
 function App() {
-  const { account, signer, connect, disconnect, isConnecting, switchNetwork } = useWallet();
+  const { account, signer, connectWallet, disconnect, isConnecting, switchNetwork } = useWallet();
   const { payments, loading: paymentsLoading, refetch } = usePayments(account);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [contract, setContract] = useState<Contract | null>(null);
@@ -141,45 +141,39 @@ function App() {
   const displayedPayments = activeTab === 'sent' ? sentPayments : receivedPayments;
 
   return (
-    <div className="min-h-screen bg-[#F5F1E8]">
+    <div className="min-h-screen bg-[#E3F2FD]">
       <Header
         account={account}
         isConnecting={isConnecting}
-        onConnect={connect}
+        onConnectWallet={connectWallet}
         onDisconnect={disconnect}
       />
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {!account ? (
           <div className="text-center py-24 px-8 illustrated-card max-w-3xl mx-auto">
-            <div className="w-20 h-20 mx-auto mb-6 rounded-[20px] bg-[#E76F51] border-[3px] border-[#2D2D2D] flex items-center justify-center shadow-[3px_3px_0px_0px_rgba(45,45,45,1)]">
+            <div className="w-20 h-20 mx-auto mb-6 rounded-[20px] bg-[#1E88E5] border-[3px] border-[#2D2D2D] flex items-center justify-center shadow-[3px_3px_0px_0px_rgba(45,45,45,1)]">
               <Inbox className="w-10 h-10 text-white" />
             </div>
-            <h2 className="text-4xl md:text-5xl font-bold text-[#2D2D2D] mb-6">
+            <h2 className="text-5xl md:text-6xl font-black text-[#2D2D2D] mb-6">
               Welcome to Ridmint
             </h2>
-            <p className="text-[#2D2D2D] text-lg mb-8 max-w-md mx-auto leading-relaxed">
+            <p className="text-[#2D2D2D] text-xl font-semibold max-w-md mx-auto leading-relaxed">
               Create conditional payments on Base network. Set time delays or custom conditions for automatic fund release.
             </p>
-            <button
-              onClick={connect}
-              className="px-8 py-3 bg-[#E9C46A] text-[#2D2D2D] font-bold text-lg illustrated-button"
-            >
-              Connect Wallet to Get Started
-            </button>
           </div>
         ) : (
           <>
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-8 gap-4">
               <div>
-                <h2 className="text-3xl font-bold text-[#2D2D2D] mb-2">Your Payments</h2>
-                <p className="text-[#2D2D2D] text-opacity-70">Manage your conditional payments on Base</p>
+                <h2 className="text-4xl font-black text-[#2D2D2D] mb-2">Your Payments</h2>
+                <p className="text-[#2D2D2D] text-lg font-semibold">Manage your conditional payments on Base</p>
               </div>
               <button
                 onClick={() => setIsModalOpen(true)}
-                className="px-6 py-3 bg-[#E76F51] text-white font-bold illustrated-button flex items-center space-x-2"
+                className="px-8 py-4 bg-[#1E88E5] text-white text-lg font-black illustrated-button flex items-center space-x-2 hover:bg-[#1976D2]"
               >
-                <Plus className="w-5 h-5" />
+                <Plus className="w-6 h-6" />
                 <span>Create Payment</span>
               </button>
             </div>
@@ -191,8 +185,8 @@ function App() {
                     onClick={() => setActiveTab('sent')}
                     className={`pb-4 px-1 border-b-[3px] font-bold text-sm transition-colors ${
                       activeTab === 'sent'
-                        ? 'border-[#E9C46A] text-[#2D2D2D]'
-                        : 'border-transparent text-[#2D2D2D] text-opacity-50 hover:text-opacity-70'
+                        ? 'border-[#1E88E5] text-[#2D2D2D]'
+                        : 'border-transparent text-[#2D2D2D] hover:text-[#1E88E5]'
                     }`}
                   >
                     Sent ({sentPayments.length})
@@ -201,8 +195,8 @@ function App() {
                     onClick={() => setActiveTab('received')}
                     className={`pb-4 px-1 border-b-[3px] font-bold text-sm transition-colors ${
                       activeTab === 'received'
-                        ? 'border-[#8AC185] text-[#2D2D2D]'
-                        : 'border-transparent text-[#2D2D2D] text-opacity-50 hover:text-opacity-70'
+                        ? 'border-[#26A69A] text-[#2D2D2D]'
+                        : 'border-transparent text-[#2D2D2D] hover:text-[#26A69A]'
                     }`}
                   >
                     Received ({receivedPayments.length})
@@ -213,7 +207,7 @@ function App() {
 
             {paymentsLoading ? (
               <div className="text-center py-12">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-[3px] border-[#E9C46A] mx-auto"></div>
+                <div className="animate-spin rounded-full h-12 w-12 border-b-[3px] border-[#1E88E5] mx-auto"></div>
                 <p className="text-[#2D2D2D] mt-4 font-medium">Loading payments...</p>
               </div>
             ) : displayedPayments.length === 0 ? (
@@ -221,10 +215,10 @@ function App() {
                 <div className="w-16 h-16 mx-auto mb-4 rounded-[16px] bg-white border-[3px] border-[#2D2D2D] flex items-center justify-center shadow-[3px_3px_0px_0px_rgba(45,45,45,1)]">
                   <Inbox className="w-8 h-8 text-[#2D2D2D]" />
                 </div>
-                <h3 className="text-lg font-bold text-[#2D2D2D] mb-2">
+                <h3 className="text-xl font-black text-[#2D2D2D] mb-2">
                   No {activeTab} payments yet
                 </h3>
-                <p className="text-[#2D2D2D] text-opacity-70">
+                <p className="text-[#2D2D2D] text-base font-semibold">
                   {activeTab === 'sent'
                     ? 'Create your first conditional payment to get started'
                     : 'Payments you receive will appear here'}

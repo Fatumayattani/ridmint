@@ -9,7 +9,6 @@ interface IERC20 {
 contract ConditionalEscrow {
     enum ConditionType { TIME_DELAY, EVENT }
     enum PaymentStatus { PENDING, COMPLETED, CANCELLED }
-
     struct Payment {
         address creator;
         address recipient;

@@ -79,7 +79,7 @@ export function CreatePaymentModal({ isOpen, onClose, onCreate }: CreatePaymentM
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
       <div className="bg-white rounded-[24px] border-[3px] border-[#2D2D2D] max-w-lg w-full shadow-[6px_6px_0px_0px_rgba(45,45,45,1)]">
         <div className="flex items-center justify-between p-6 border-b-[3px] border-[#E5E5E5]">
-          <h2 className="text-2xl font-bold text-[#2D2D2D]">
+          <h2 className="text-3xl font-black text-[#2D2D2D]">
             Create Conditional Payment
           </h2>
           <button
@@ -92,7 +92,7 @@ export function CreatePaymentModal({ isOpen, onClose, onCreate }: CreatePaymentM
 
         <form onSubmit={handleSubmit} className="p-6 space-y-5">
           <div>
-            <label className="block text-sm font-bold text-[#2D2D2D] mb-2">
+            <label className="block text-base font-black text-[#2D2D2D] mb-2">
               Recipient Address
             </label>
             <input
@@ -100,29 +100,29 @@ export function CreatePaymentModal({ isOpen, onClose, onCreate }: CreatePaymentM
               value={formData.recipient}
               onChange={(e) => setFormData({ ...formData, recipient: e.target.value })}
               placeholder="0x..."
-              className="w-full px-4 py-2 border-[2px] border-[#2D2D2D] rounded-[10px] focus:ring-2 focus:ring-[#E9C46A] focus:border-[#E9C46A] outline-none transition-all"
+              className="w-full px-4 py-2 border-[2px] border-[#2D2D2D] rounded-[10px] focus:ring-2 focus:ring-[#64B5F6] focus:border-[#64B5F6] outline-none transition-all"
             />
           </div>
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-bold text-[#2D2D2D] mb-2">Amount</label>
+              <label className="block text-base font-black text-[#2D2D2D] mb-2">Amount</label>
               <input
                 type="number"
                 step="0.000001"
                 value={formData.amount}
                 onChange={(e) => setFormData({ ...formData, amount: e.target.value })}
                 placeholder="0.0"
-                className="w-full px-4 py-2 border-[2px] border-[#2D2D2D] rounded-[10px] focus:ring-2 focus:ring-[#E9C46A] focus:border-[#E9C46A] outline-none transition-all"
+                className="w-full px-4 py-2 border-[2px] border-[#2D2D2D] rounded-[10px] focus:ring-2 focus:ring-[#64B5F6] focus:border-[#64B5F6] outline-none transition-all"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-bold text-[#2D2D2D] mb-2">Token</label>
+              <label className="block text-base font-black text-[#2D2D2D] mb-2">Token</label>
               <select
                 value={formData.token}
                 onChange={(e) => setFormData({ ...formData, token: e.target.value as 'ETH' | 'USDC' })}
-                className="w-full px-4 py-2 border-[2px] border-[#2D2D2D] rounded-[10px] focus:ring-2 focus:ring-[#E9C46A] focus:border-[#E9C46A] outline-none transition-all bg-white"
+                className="w-full px-4 py-2 border-[2px] border-[#2D2D2D] rounded-[10px] focus:ring-2 focus:ring-[#64B5F6] focus:border-[#64B5F6] outline-none transition-all bg-white"
               >
                 <option value="ETH">ETH</option>
                 <option value="USDC">USDC</option>
@@ -131,20 +131,20 @@ export function CreatePaymentModal({ isOpen, onClose, onCreate }: CreatePaymentM
           </div>
 
           <div>
-            <label className="block text-sm font-bold text-[#2D2D2D] mb-3">Condition Type</label>
+            <label className="block text-base font-black text-[#2D2D2D] mb-3">Condition Type</label>
             <div className="grid grid-cols-2 gap-3">
               <button
                 type="button"
                 onClick={() => setFormData({ ...formData, conditionType: 'time_delay', conditionValue: '' })}
                 className={`p-4 rounded-[12px] border-[3px] transition-all ${
                   formData.conditionType === 'time_delay'
-                    ? 'border-[#E9C46A] bg-[#E9C46A] shadow-[3px_3px_0px_0px_rgba(45,45,45,1)]'
+                    ? 'border-[#64B5F6] bg-[#64B5F6] shadow-[3px_3px_0px_0px_rgba(45,45,45,1)]'
                     : 'border-[#2D2D2D] hover:shadow-[2px_2px_0px_0px_rgba(45,45,45,1)]'
                 }`}
               >
-                <Clock className={`w-6 h-6 mx-auto mb-2 ${formData.conditionType === 'time_delay' ? 'text-[#2D2D2D]' : 'text-[#2D2D2D] text-opacity-40'}`} />
-                <div className="text-sm font-bold text-[#2D2D2D]">Time Delay</div>
-                <div className="text-xs text-[#2D2D2D] text-opacity-70 mt-1">Auto-release after time</div>
+                <Clock className={`w-7 h-7 mx-auto mb-2 ${formData.conditionType === 'time_delay' ? 'text-[#2D2D2D]' : 'text-[#64B5F6]'}`} />
+                <div className="text-base font-black text-[#2D2D2D]">Time Delay</div>
+                <div className="text-sm text-[#2D2D2D] font-bold mt-1">Auto-release after time</div>
               </button>
 
               <button
@@ -152,26 +152,26 @@ export function CreatePaymentModal({ isOpen, onClose, onCreate }: CreatePaymentM
                 onClick={() => setFormData({ ...formData, conditionType: 'event', conditionValue: '' })}
                 className={`p-4 rounded-[12px] border-[3px] transition-all ${
                   formData.conditionType === 'event'
-                    ? 'border-[#8AC185] bg-[#8AC185] shadow-[3px_3px_0px_0px_rgba(45,45,45,1)]'
+                    ? 'border-[#26A69A] bg-[#26A69A] shadow-[3px_3px_0px_0px_rgba(45,45,45,1)]'
                     : 'border-[#2D2D2D] hover:shadow-[2px_2px_0px_0px_rgba(45,45,45,1)]'
                 }`}
               >
-                <Zap className={`w-6 h-6 mx-auto mb-2 ${formData.conditionType === 'event' ? 'text-[#2D2D2D]' : 'text-[#2D2D2D] text-opacity-40'}`} />
-                <div className="text-sm font-bold text-[#2D2D2D]">Event Based</div>
-                <div className="text-xs text-[#2D2D2D] text-opacity-70 mt-1">Manual release</div>
+                <Zap className={`w-7 h-7 mx-auto mb-2 ${formData.conditionType === 'event' ? 'text-[#2D2D2D]' : 'text-[#26A69A]'}`} />
+                <div className="text-base font-black text-[#2D2D2D]">Event Based</div>
+                <div className="text-sm text-[#2D2D2D] font-bold mt-1">Manual release</div>
               </button>
             </div>
           </div>
 
           {formData.conditionType === 'time_delay' && (
             <div>
-              <label className="block text-sm font-bold text-[#2D2D2D] mb-2">
+              <label className="block text-base font-black text-[#2D2D2D] mb-2">
                 Delay Duration
               </label>
               <select
                 value={formData.conditionValue}
                 onChange={(e) => setFormData({ ...formData, conditionValue: e.target.value })}
-                className="w-full px-4 py-2 border-[2px] border-[#2D2D2D] rounded-[10px] focus:ring-2 focus:ring-[#E9C46A] focus:border-[#E9C46A] outline-none transition-all bg-white"
+                className="w-full px-4 py-2 border-[2px] border-[#2D2D2D] rounded-[10px] focus:ring-2 focus:ring-[#64B5F6] focus:border-[#64B5F6] outline-none transition-all bg-white"
               >
                 <option value="">Select duration</option>
                 <option value="300">5 minutes</option>
@@ -185,25 +185,25 @@ export function CreatePaymentModal({ isOpen, onClose, onCreate }: CreatePaymentM
 
           {formData.conditionType === 'event' && (
             <div>
-              <label className="block text-sm font-bold text-[#2D2D2D] mb-2">
-                Event Identifier <span className="text-[#E76F51]">*</span>
+              <label className="block text-base font-black text-[#2D2D2D] mb-2">
+                Event Identifier <span className="text-[#5C6BC0]">*</span>
               </label>
               <input
                 type="text"
                 value={formData.conditionValue}
                 onChange={(e) => setFormData({ ...formData, conditionValue: e.target.value })}
                 placeholder="e.g., delivery-confirmed, milestone-reached"
-                className="w-full px-4 py-2 border-[2px] border-[#2D2D2D] rounded-[10px] focus:ring-2 focus:ring-[#8AC185] focus:border-[#8AC185] outline-none transition-all"
+                className="w-full px-4 py-2 border-[2px] border-[#2D2D2D] rounded-[10px] focus:ring-2 focus:ring-[#26A69A] focus:border-[#26A69A] outline-none transition-all"
                 required
               />
-              <p className="text-xs text-[#2D2D2D] text-opacity-60 mt-2">
+              <p className="text-sm text-[#2D2D2D] font-semibold mt-2">
                 A unique identifier that will be checked programmatically when the event occurs
               </p>
             </div>
           )}
 
           {error && (
-            <div className="bg-[#FEF5ED] border-[2px] border-[#E76F51] text-[#E76F51] px-4 py-3 rounded-[10px] text-sm font-semibold">
+            <div className="bg-[#E8EAF6] border-[2px] border-[#5C6BC0] text-[#5C6BC0] px-4 py-3 rounded-[10px] text-base font-bold">
               {error}
             </div>
           )}
@@ -212,14 +212,14 @@ export function CreatePaymentModal({ isOpen, onClose, onCreate }: CreatePaymentM
             <button
               type="button"
               onClick={onClose}
-              className="flex-1 px-4 py-2 border-[2px] border-[#2D2D2D] text-[#2D2D2D] rounded-[10px] font-bold hover:bg-[#FEF5ED] transition-all"
+              className="flex-1 px-5 py-3 border-[2px] border-[#2D2D2D] text-[#2D2D2D] rounded-[10px] text-base font-black hover:bg-[#E3F2FD] transition-all"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={loading}
-              className="flex-1 px-4 py-2 bg-[#E76F51] text-white font-bold illustrated-button-sm disabled:opacity-50"
+              className="flex-1 px-5 py-3 bg-[#1E88E5] text-white text-base font-black illustrated-button-sm disabled:opacity-50 hover:bg-[#1976D2]"
             >
               {loading ? 'Creating...' : 'Create Payment'}
             </button>
