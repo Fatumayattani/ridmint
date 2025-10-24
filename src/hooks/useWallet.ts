@@ -15,35 +15,37 @@ export function useWallet() {
       const savedWalletType = localStorage.getItem('walletType') as WalletType;
       if (typeof window === 'undefined') return;
 
-      const walletProvider = getWalletProvider(savedWalletType);
-      if (!savedWalletType || !walletProvider) {
+      const injectedProvider = getWalletProvider(savedWalletType);
+      if (!savedWalletType || !injectedProvider) {
         localStorage.removeItem('walletType');
         return;
       }
 
       try {
-        const provider = new BrowserProvider(walletProvider);
-        setProvider(provider);
+        // ✅ Attach event listeners only if .on() exists
+        if (typeof injectedProvider.on === 'function') {
+          injectedProvider.on('accountsChanged', (accounts: string[]) => {
+            if (accounts.length > 0) {
+              setAccount(accounts[0]);
+            } else {
+              handleDisconnect();
+            }
+          });
+
+          injectedProvider.on('chainChanged', () => {
+            window.location.reload();
+          });
+        }
+
+        // ✅ Wrap provider for ethers usage
+        const browserProvider = new BrowserProvider(injectedProvider);
+        setProvider(browserProvider);
         setWalletType(savedWalletType);
 
-        walletProvider.on('accountsChanged', (accounts: string[]) => {
-          if (accounts.length > 0) {
-            setAccount(accounts[0]);
-          } else {
-            handleDisconnect();
-          }
-        });
-
-        walletProvider.on('chainChanged', () => {
-          window.location.reload();
-        });
-
-        const accounts = await provider.listAccounts();
-        if (accounts.length > 0) {
-          const signer = await provider.getSigner();
-          setAccount(accounts[0].address);
-          setSigner(signer);
-        }
+        const signer = await browserProvider.getSigner();
+        const address = await signer.getAddress();
+        setAccount(address);
+        setSigner(signer);
       } catch (error) {
         console.error('Error initializing wallet:', error);
         localStorage.removeItem('walletType');
@@ -55,10 +57,11 @@ export function useWallet() {
     return () => {
       const savedWalletType = localStorage.getItem('walletType') as WalletType;
       if (typeof window !== 'undefined' && savedWalletType) {
-        const walletProvider = getWalletProvider(savedWalletType);
-        if (walletProvider) {
-          walletProvider.removeAllListeners('accountsChanged');
-          walletProvider.removeAllListeners('chainChanged');
+        const injectedProvider = getWalletProvider(savedWalletType);
+        // ✅ Remove listeners only if supported
+        if (injectedProvider && typeof injectedProvider.removeAllListeners === 'function') {
+          injectedProvider.removeAllListeners('accountsChanged');
+          injectedProvider.removeAllListeners('chainChanged');
         }
       }
     };
@@ -75,7 +78,6 @@ export function useWallet() {
         );
 
       case 'metamask':
-        // ✅ Real MetaMask filter — Core pretends to be MetaMask too
         if (window.ethereum?.providers) {
           const metamask = window.ethereum.providers.find(
             (p: any) => p.isMetaMask && !p.isAvalanche
@@ -109,9 +111,9 @@ export function useWallet() {
   const connectWallet = async (type: WalletType) => {
     if (!type) return;
 
-    const walletProvider = getWalletProvider(type);
+    const injectedProvider = getWalletProvider(type);
 
-    if (!walletProvider) {
+    if (!injectedProvider) {
       const walletNames = {
         coinbase: 'Coinbase Wallet',
         metamask: 'MetaMask',
@@ -125,24 +127,30 @@ export function useWallet() {
 
     setIsConnecting(true);
     try {
-      const provider = new BrowserProvider(walletProvider);
-      const accounts = await provider.send('eth_requestAccounts', []);
-      const signer = await provider.getSigner();
+      // ✅ Request accounts directly on the injected provider
+      await injectedProvider.request({ method: 'eth_requestAccounts' });
 
-      walletProvider.on('accountsChanged', (accounts: string[]) => {
-        if (accounts.length > 0) {
-          setAccount(accounts[0]);
-        } else {
-          handleDisconnect();
-        }
-      });
+      // ✅ Attach listeners if supported
+      if (typeof injectedProvider.on === 'function') {
+        injectedProvider.on('accountsChanged', (accounts: string[]) => {
+          if (accounts.length > 0) {
+            setAccount(accounts[0]);
+          } else {
+            handleDisconnect();
+          }
+        });
 
-      walletProvider.on('chainChanged', () => {
-        window.location.reload();
-      });
+        injectedProvider.on('chainChanged', () => {
+          window.location.reload();
+        });
+      }
 
-      setProvider(provider);
-      setAccount(accounts[0]);
+      const browserProvider = new BrowserProvider(injectedProvider);
+      const signer = await browserProvider.getSigner();
+      const address = await signer.getAddress();
+
+      setProvider(browserProvider);
+      setAccount(address);
       setSigner(signer);
       setWalletType(type);
       localStorage.setItem('walletType', type);
