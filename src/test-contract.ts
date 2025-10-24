@@ -1,16 +1,25 @@
 import { ethers } from "ethers";
-import { CONDITIONAL_ESCROW_ADDRESS, CONDITIONAL_ESCROW_ABI } from "./config/contracts";
+import { CONTRACTS, CONTRACT_ABI, ERC20_ABI, NETWORKS } from './config/contracts';
 
 async function main() {
-  // ✅ connect to Base Sepolia RPC
-  const provider = new ethers.JsonRpcProvider("https://sepolia.base.org");
+  // ✅ connect using NETWORKS config instead of hardcoding RPC
+  const provider = new ethers.JsonRpcProvider(NETWORKS.BASE_SEPOLIA.rpcUrl);
 
   // create a contract instance
   const contract = new ethers.Contract(
-    CONDITIONAL_ESCROW_ADDRESS,
-    CONDITIONAL_ESCROW_ABI,
+    CONTRACTS.CONDITIONAL_ESCROW,
+    CONTRACT_ABI,
     provider
   );
+
+  // Example of using ERC20_ABI (e.g., checking USDC balance)
+  const usdc = new ethers.Contract(
+    CONTRACTS.USDC_BASE_SEPOLIA,
+    ERC20_ABI,
+    provider
+  );
+  const balance = await usdc.balanceOf("0xYourWalletAddressHere");
+  console.log("💰 USDC Balance:", ethers.formatUnits(balance, 6));
 
   // just a simple call — get total number of payments
   const counter = await contract.paymentCounter();
