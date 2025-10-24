@@ -13,13 +13,10 @@ export function useWallet() {
   useEffect(() => {
     const initWallet = async () => {
       const savedWalletType = localStorage.getItem('walletType') as WalletType;
-      if (!savedWalletType || typeof window === 'undefined') {
-        return;
-      }
+      if (typeof window === 'undefined') return;
 
       const walletProvider = getWalletProvider(savedWalletType);
-      if (!walletProvider) {
-        console.log(`${savedWalletType} not detected`);
+      if (!savedWalletType || !walletProvider) {
         localStorage.removeItem('walletType');
         return;
       }
@@ -72,14 +69,30 @@ export function useWallet() {
 
     switch (type) {
       case 'coinbase':
-        return window.coinbaseWalletExtension || (window.ethereum?.isCoinbaseWallet ? window.ethereum : null);
+        return (
+          window.coinbaseWalletExtension ||
+          (window.ethereum?.isCoinbaseWallet ? window.ethereum : null)
+        );
+
       case 'metamask':
+        // ✅ Real MetaMask filter — Core pretends to be MetaMask too
         if (window.ethereum?.providers) {
-          return window.ethereum.providers.find((p: any) => p.isMetaMask);
+          const metamask = window.ethereum.providers.find(
+            (p: any) => p.isMetaMask && !p.isAvalanche
+          );
+          if (metamask) return metamask;
         }
-        return window.ethereum?.isMetaMask ? window.ethereum : null;
+        if (window.ethereum?.isMetaMask && !window.ethereum?.isAvalanche) {
+          return window.ethereum;
+        }
+        return null;
+
       case 'core':
-        return window.avalanche || (window.ethereum?.isAvalanche ? window.ethereum : null);
+        return (
+          window.avalanche ||
+          (window.ethereum?.isAvalanche ? window.ethereum : null)
+        );
+
       default:
         return null;
     }
@@ -104,7 +117,9 @@ export function useWallet() {
         metamask: 'MetaMask',
         core: 'Core Wallet'
       };
-      alert(`Please install ${walletNames[type]} to continue. Visit the wallet's official website to download.`);
+      alert(
+        `Please install ${walletNames[type]} to continue. Visit the wallet's official website to download.`
+      );
       return;
     }
 
